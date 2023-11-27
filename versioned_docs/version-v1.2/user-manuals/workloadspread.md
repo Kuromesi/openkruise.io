@@ -17,7 +17,7 @@ Some common policies include:
   - control how many pods in a workload are deployed in different cpu arch
   - enable pods in different cpu arch to have different resource requirements
 
-The feature of WorkloadSpread is similar with UnitedDeployment in OpenKruise community. Each WorkloadSpread defines multi-domain
+The feature of WorkloadSpread is similar with **UnitedDeployment** in OpenKruise community. Each WorkloadSpread defines multi-domain
 called `subset`. Each domain may provide the limit to run the replicas number of pods called `maxReplicas`.
 WorkloadSpread injects the domain configuration into the Pod by Webhook, and it also controls the order of scale in and scale out.
 
@@ -43,16 +43,16 @@ spec:
             operator: In
             values:
               - zone-a
-    preferredNodeSelectorTerms:
-      - weight: 1
-        preference:
-        matchExpressions:
-          - key: another-node-label-key
-            operator: In
-            values:
-              - another-node-label-value
+      preferredNodeSelectorTerms:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: another-node-label-key
+                operator: In
+                values:
+                  - another-node-label-value
       maxReplicas: 3
-      tolertions: []
+      tolerations: [ ]
       patch:
         metadata:
           labels:
@@ -99,7 +99,7 @@ tolerations:
   effect: "NoSchedule"
 ```
 
-- `patch`: customize the Pod configuration of `subset`, such as Annotations, Labels, Env. 
+- `patch`: customize the Pod configuration of `subset`, such as Annotations, Labels, Env.
 
 Example:
 
@@ -145,10 +145,10 @@ WorkloadSpread provides two kind strategies, the default strategy is `Fixed`.
       rescheduleCriticalSeconds: 30
 ```
 
-- Fixed: 
+- Fixed:
 
-  Workload is strictly spread according to the definition of the subset. 
-  
+  Workload is strictly spread according to the definition of the subset.
+
 - Adaptive:
 
   **Reschedule**: Kruise will check the unschedulable Pods of subset. If it exceeds the defined duration, the failed Pods will be rescheduled to the other `subset`.
@@ -179,8 +179,8 @@ The workload managed by WorkloadSpread will scale according to the defined order
 
 ### Scale out
 
-- The Pods are scheduled in the subset order defined in the `spec.subsets`. It will be scheduled in the next `subset` while the replica number reaches the maxReplicas of `subset` 
-  
+- The Pods are scheduled in the subset order defined in the `spec.subsets`. It will be scheduled in the next `subset` while the replica number reaches the maxReplicas of `subset`
+
 ### Scale in
 
 - When the replica number of the `subset` is greater than the `maxReplicas`, the extra Pods will be removed in a high priority.
@@ -215,7 +215,7 @@ $ helm install kruise https://... --set featureGates="WorkloadSpread=true"
 ```yaml
 apiVersion: apps.kruise.io/v1alpha1
 kind: WorkloadSpread
-metadta:
+metadata:
   name: ws-demo
   namespace: deploy
 spec:
@@ -264,7 +264,7 @@ Deploy 100 Pods to two `zone`(zone-a, zone-b) separately.
 ```yaml
 apiVersion: apps.kruise.io/v1alpha1
 kind: WorkloadSpread
-metadta:
+metadata:
   name: ws-demo
   namespace: deploy
 spec:

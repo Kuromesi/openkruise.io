@@ -17,7 +17,7 @@ Some common policies include:
   - control how many pods in a workload are deployed in different cpu arch
   - enable pods in different cpu arch to have different resource requirements
 
-The feature of WorkloadSpread is similar with UnitedDeployment in OpenKruise community. Each WorkloadSpread defines multi-domain
+The feature of WorkloadSpread is similar with **UnitedDeployment** in OpenKruise community. Each WorkloadSpread defines multi-domain
 called `subset`. Each domain may provide the limit to run the replicas number of pods called `maxReplicas`.
 WorkloadSpread injects the domain configuration into the Pod by Webhook, and it also controls the order of scale in and scale out.
 
@@ -49,16 +49,16 @@ spec:
             operator: In
             values:
               - zone-a
-    preferredNodeSelectorTerms:
-      - weight: 1
-        preference:
-        matchExpressions:
-          - key: another-node-label-key
-            operator: In
-            values:
-              - another-node-label-value
+      preferredNodeSelectorTerms:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: another-node-label-key
+                operator: In
+                values:
+                  - another-node-label-value
       maxReplicas: 3
-      tolertions: []
+      tolerations: [ ]
       patch:
         metadata:
           labels:

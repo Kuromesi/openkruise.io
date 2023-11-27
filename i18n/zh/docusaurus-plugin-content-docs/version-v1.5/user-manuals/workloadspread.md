@@ -26,7 +26,7 @@ WorkloadSpread与OpenKruise社区的UnitedDeployment功能相似，每一个Work
 
 特别地，WorkloadSpread 对 `StatefulSet` 只支持扩容管理，缩容仍旧保留 StatefulSet 固有的缩容顺序, 且扩容管理时按照Pod序号进行划分 Subset, 详情可以参照[注释](https://github.com/openkruise/kruise/blob/f46097db1fa5a4ed9c002eba050b888344884e11/pkg/util/workloadspread/workloadspread.go#L305)。
 
-从 Kruise `1.5.0` 版本开始，WorkloadSpread 支持 `包含 [scale sub-resource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource) 的自定义工作负载`。
+从 Kruise `1.5.0` 版本开始，WorkloadSpread 支持包含 [scale sub-resource](https://kubernetes.io/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions/#scale-subresource) 的自定义工作负载。
 
 ## Demo
 
@@ -48,16 +48,16 @@ spec:
             operator: In
             values:
               - zone-a
-    preferredNodeSelectorTerms:
-      - weight: 1
-        preference:
-        matchExpressions:
-          - key: another-node-label-key
-            operator: In
-            values:
-              - another-node-label-value
+      preferredNodeSelectorTerms:
+        - weight: 1
+          preference:
+            matchExpressions:
+              - key: another-node-label-key
+                operator: In
+                values:
+                  - another-node-label-value
       maxReplicas: 3
-      tolertions: []
+      tolerations: [ ]
       patch:
         metadata:
           labels:
@@ -88,7 +88,7 @@ spec:
 - `maxReplicas`：该subset所期望调度的最大副本数，需为 >= 0的整数。若设置为空，代表不限制subset的副本数。
 > 当前版本暂不支持百分比类型。
 
-- `requiredNodeSelectorTerm`: 强制匹配到某个zone。
+- `orequiredNodeSelectorTerm`: 强制匹配到某个zone。
 
 - `preferredNodeSelectorTerms`: 尽量匹配到某个zone。
 
@@ -220,7 +220,7 @@ zone-a（ack）固定100个Pod，zone-b（eci）做弹性区域
 ```yaml
 apiVersion: apps.kruise.io/v1alpha1
 kind: WorkloadSpread
-metadta:
+metadata:
   name: ws-demo
   namespace: deploy
 spec:
@@ -268,7 +268,7 @@ spec:
 ```yaml
 apiVersion: apps.kruise.io/v1alpha1
 kind: WorkloadSpread
-metadta:
+metadata:
   name: ws-demo
   namespace: deploy
 spec:
